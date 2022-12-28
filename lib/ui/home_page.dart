@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:giphi_finder/ui/gif_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:share/share.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -172,6 +173,10 @@ class _HomePageState extends State<HomePage> {
                   builder: (context) => GifPage(snapshot.data["data"][index]),
                 ),
               );
+            },
+            onLongPress: () {
+              Share.share(snapshot.data["data"][index]["images"]["fixed_height"]
+                  ["url"]);
             },
           );
         } else {
