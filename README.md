@@ -1,4 +1,4 @@
-# giphi_finder
+# giphy_finder
 
 A new Flutter project.
 
