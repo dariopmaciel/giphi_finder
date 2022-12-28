@@ -127,8 +127,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  //Widget _createGifTable(BuildContext context, AsyncSnapshot snapshot) {
-  Widget _createGifTable(context, snapshot) {
+  Widget _createGifTable(BuildContext context, AsyncSnapshot snapshot) {
+    //Widget _createGifTable(context, snapshot) {
     return GridView.builder(
       padding: const EdgeInsets.all(10),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -136,9 +136,15 @@ class _HomePageState extends State<HomePage> {
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
-      itemCount: 4,
+      itemCount: snapshot.data["data"].length,
       itemBuilder: (context, index) {
-        return GestureDetector();
+        return GestureDetector(
+          child: Image.network(
+            snapshot.data["data"][index]["images"]["fixed_height"]["url"],
+            height: 300.0,
+            fit: BoxFit.cover,
+          ),
+        );
       },
     );
   }
