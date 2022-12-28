@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:giphi_finder/ui/gif_page.dart';
 import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
@@ -17,18 +18,13 @@ class _HomePageState extends State<HomePage> {
   int _offset = 0;
 
   Future<Map> _getGiphfs() async {
-    //original
-    //https://api.giphy.com/v1/gifs/trending?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&limit=20&rating=g
-    var url1 = Uri.https(
+    http.Response response;
+    var url1 = Uri.parse(
         "https://api.giphy.com/v1/gifs/trending?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&limit=20&rating=g");
 
-    //original
-    //https://api.giphy.com/v1/gifs/search?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&q=dogs&limit=20&offset=0&rating=g&lang=pt
+    var url2 = Uri.parse(
+        "https://api.giphy.com/v1/gifs/search?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&q=$_search&limit=19&offset=$_offset&rating=g&lang=pt");
 
-    var url2 = Uri.https(
-        "https://api.giphy.com/v1/gifs/search?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&q=$_search&limit=25&offset=$_offset&rating=g&lang=pt");
-
-    http.Response response;
     if (_search == null || _search!.isEmpty) {
       response = await http.get(url1);
     } else {
@@ -53,7 +49,10 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.black,
         centerTitle: true,
         title: Image.network(
-            "https://developers.giphy.com/branch/master/static/header-logo-0fec0225d189bc0eae27dac3e3770582.gif"),
+            //GIPHY + GATO
+            "https://media4.giphy.com/media/l41YlHs99JsSptZf2/200w.webp?cid=ecf05e47tlmbf5bvtdljjl8bz8k8ah12cgcd7yj7getx1dp6&rid=200w.webp&ct=g"),
+        //GIPHY DEVELOPER
+        // "https://developers.giphy.com/branch/master/static/header-logo-0fec0225d189bc0eae27dac3e3770582.gif"),
       ),
       drawer: Drawer(
         child: ListView(
@@ -74,12 +73,16 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               title: Text(
-                "Este projeto foi criado como um experimento de aprendizado. \n\nEfetuando uso e consumo de duas APIs diferentes. A primeira dos gifs mais bem avaliados, a segunda dos gifs procurados",
+                "Este projeto foi criado como um experimento de aprendizado. \n\nEste App efetua uso e consumo de duas APIs diferentes. A primeira API dos gifs mais bem avaliados no momento de sua consulta e a segunda dos gifs procurados. \n\nNovas funcionalidades como o compartilhamento em redes sociais e plataformas de comunicação estarão disponiveis em breve.",
                 textAlign: TextAlign.justify,
+                style: TextStyle(fontSize: 18),
               ),
             ),
             ListTile(
-              title: Text("Obrigado por sua visualização."),
+              title: Text(
+                "\nObrigado por sua visualização.",
+                style: TextStyle(fontSize: 20),
+              ),
             ),
           ],
         ),
@@ -100,6 +103,7 @@ class _HomePageState extends State<HomePage> {
               onSubmitted: (text) {
                 setState(() {
                   _search = text;
+                  _offset = 0;
                 });
               },
             ),
@@ -135,24 +139,57 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  //Widget _createGifTable(BuildContext context, AsyncSnapshot snapshot) {
-  Widget _createGifTable(context, snapshot) {
+  int? _getCount(List data) {
+    if (_search == null) {
+      return data.length;
+    } else {
+      data.length + 1;
+    }
+  }
+
+  Widget _createGifTable(BuildContext context, AsyncSnapshot snapshot) {
+    //Widget _createGifTable(context, snapshot) {
     return GridView.builder(
       padding: const EdgeInsets.all(10),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
+        crossAxisSpacing: 10.0,
+        mainAxisSpacing: 10.0,
       ),
-      itemCount: snapshot.data["data"].length,
+      itemCount: _getCount(snapshot.data["data"]),
       itemBuilder: (context, index) {
-        return GestureDetector(
-          child: Image.network(
-            snapshot.data["data"][index]["images"]["fixed_height"]["url"],
-            height: 300.0,
-            fit: BoxFit.cover,
-          ),
-        );
+        if (_search == null || index < snapshot.data['data'].length) {
+          return GestureDetector(
+            child: Image.network(
+              snapshot.data["data"][index]["images"]["fixed_height"]["url"],
+              height: 300.0,
+              fit: BoxFit.cover,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GifPage(snapshot.data["data"][index]),
+                ),
+              );
+            },
+          );
+        } else {
+          return GestureDetector(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const <Widget>[
+                Icon(Icons.add, color: Colors.white, size: 70),
+                Text("Carregar mais...", style: TextStyle(color: Colors.white))
+              ],
+            ),
+            onTap: () {
+              setState(() {
+                _offset += 19;
+              });
+            },
+          );
+        }
       },
     );
   }
