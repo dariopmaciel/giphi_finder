@@ -15,6 +15,7 @@ class GifPage extends StatelessWidget {
       ),
       body: Center(
         child: Image.network(_gifData["images"]["fixed_height"]["url"]),
+        
       ),
     );
   }
