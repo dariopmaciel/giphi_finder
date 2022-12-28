@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,17 +16,20 @@ class _HomePageState extends State<HomePage> {
   String? _search;
   int _offset = 0;
 
-  //https://api.giphy.com/v1/gifs/trending?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&limit=20&rating=g
-  var url1 = Uri.parse(
-      "https://api.giphy.com/v1/gifs/trending?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&limit=20&rating=g");
-
-  //https://api.giphy.com/v1/gifs/search?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&q=dogs&limit=20&offset=0&rating=g&lang=pt
-  var url2 = Uri.parse(
-      "https://api.giphy.com/v1/gifs/search?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&q=dogs&limit=20&offset=0&rating=g&lang=pt");
-
   Future<Map> _getGiphfs() async {
+    //original
+    //https://api.giphy.com/v1/gifs/trending?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&limit=20&rating=g
+    var url1 = Uri.https(
+        "https://api.giphy.com/v1/gifs/trending?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&limit=20&rating=g");
+
+    //original
+    //https://api.giphy.com/v1/gifs/search?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&q=dogs&limit=20&offset=0&rating=g&lang=pt
+
+    var url2 = Uri.https(
+        "https://api.giphy.com/v1/gifs/search?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&q=$_search&limit=25&offset=$_offset&rating=g&lang=pt");
+
     http.Response response;
-    if (_search == null) {
+    if (_search == null || _search!.isEmpty) {
       response = await http.get(url1);
     } else {
       response = await http.get(url2);
@@ -84,16 +87,21 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.black,
       body: Column(
         children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.all(10.0),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Pesquise Aqui!",
                 labelStyle: TextStyle(color: Colors.white),
                 border: OutlineInputBorder(),
               ),
-              style: TextStyle(color: Colors.white, fontSize: 18),
+              style: const TextStyle(color: Colors.white, fontSize: 18),
               textAlign: TextAlign.center,
+              onSubmitted: (text) {
+                setState(() {
+                  _search = text;
+                });
+              },
             ),
           ),
           Expanded(
@@ -113,12 +121,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   default:
-                    if (snapshot.hasError)
+                    if (snapshot.hasError) {
                       return Container(color: Colors.red);
-                    else
+                    } else {
                       return _createGifTable(context, snapshot);
+                    }
                 }
-                ;
               },
             ),
           )
@@ -127,8 +135,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _createGifTable(BuildContext context, AsyncSnapshot snapshot) {
-    //Widget _createGifTable(context, snapshot) {
+  //Widget _createGifTable(BuildContext context, AsyncSnapshot snapshot) {
+  Widget _createGifTable(context, snapshot) {
     return GridView.builder(
       padding: const EdgeInsets.all(10),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
