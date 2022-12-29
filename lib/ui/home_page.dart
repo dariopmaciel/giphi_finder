@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:giphi_finder/ui/gif_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -21,10 +22,14 @@ class _HomePageState extends State<HomePage> {
   Future<Map> _getGiphfs() async {
     http.Response response;
     var url1 = Uri.parse(
-        "https://api.giphy.com/v1/gifs/trending?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&limit=20&rating=g");
+        "https://api.giphy.com/v1/gifs/trending?api_key=Did1TB2wePuugtO71ukMOxwrAx5CGaiR&limit=20&rating=g");
+    // "https://api.giphy.com/v1/gifs/trending?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&limit=20&rating=g");
 
     var url2 = Uri.parse(
-        "https://api.giphy.com/v1/gifs/search?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&q=$_search&limit=19&offset=$_offset&rating=g&lang=pt");
+        //https://api.giphy.com/v1/gifs/search?api_key=Did1TB2wePuugtO71ukMOxwrAx5CGaiR&q=dogs&limit=20&offset=0&rating=g&lang=en
+        //"https://api.giphy.com/v1/gifs/search?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&q=$_search&limit=19&offset=$_offset&rating=g&lang=pt");
+
+        "https://api.giphy.com/v1/gifs/search?api_key=Did1TB2wePuugtO71ukMOxwrAx5CGaiR&q=$_search&limit=19&offset=$_offset&rating=g&lang=en");
 
     if (_search == null || _search!.isEmpty) {
       response = await http.get(url1);
@@ -140,11 +145,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  int? _getCount(List data) {
+  int _getCount(List data) {
     if (_search == null) {
       return data.length;
     } else {
-      data.length + 1;
+      return data.length + 1;
     }
   }
 
@@ -154,15 +159,19 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.all(10),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
+        //expações entre os gifs, formadores do grid
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
       ),
+      shrinkWrap: true,
       itemCount: _getCount(snapshot.data["data"]),
       itemBuilder: (context, index) {
         if (_search == null || index < snapshot.data['data'].length) {
           return GestureDetector(
-            child: Image.network(
-              snapshot.data["data"][index]["images"]["fixed_height"]["url"],
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: snapshot.data["data"][index]["images"]["fixed_height"]
+                  ["url"],
               height: 300.0,
               fit: BoxFit.cover,
             ),
@@ -170,8 +179,8 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => GifPage(snapshot.data["data"][index]),
-                ),
+                    builder: (context) =>
+                        GifPage(snapshot.data["data"][index])),
               );
             },
             onLongPress: () {
