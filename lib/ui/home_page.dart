@@ -175,6 +175,7 @@ class _HomePageState extends State<HomePage> {
               height: 300.0,
               fit: BoxFit.cover,
             ),
+//para chamar a proxima tela cria-se uma rota no 'onTap' da imagem que recebeu o tap
             onTap: () {
               Navigator.push(
                 context,
@@ -183,6 +184,7 @@ class _HomePageState extends State<HomePage> {
                         GifPage(snapshot.data["data"][index])),
               );
             },
+//para criar um shared de long press de imagem atual
             onLongPress: () {
               Share.share(snapshot.data["data"][index]["images"]["fixed_height"]
                   ["url"]);
