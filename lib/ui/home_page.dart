@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 
     var url2 = Uri.parse(
         //https://api.giphy.com/v1/gifs/search?api_key=Did1TB2wePuugtO71ukMOxwrAx5CGaiR&q=dogs&limit=20&offset=0&rating=g&lang=en
-        //"https://api.giphy.com/v1/gifs/search?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&q=$_search&limit=19&offset=$_offset&rating=g&lang=pt");
+        //"https://api.giphy.com/v1/gifs/search?api_key=ku2ccWtCSKi6ZrC2XePc08FfIeDbMWx1&q=$_search&limit=20&offset=$_offset&rating=g&lang=pt");
 
         "https://api.giphy.com/v1/gifs/search?api_key=Did1TB2wePuugtO71ukMOxwrAx5CGaiR&q=$_search&limit=19&offset=$_offset&rating=g&lang=en");
 
