@@ -2,23 +2,6 @@
 
 About this new Flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-# Lista de Tarefas
-
-About this new Flutter project.
-
 With this project, I apply my acquired knowledge about the use and consumption of API's (pub.dev).
 
 This project uses and consumes two different API's (GYPHY API's). The first presents the 20 most searched gifs at the time of your query. The second searches for your choice of the first 19 items located by the API, opening another query in the twentieth position.
