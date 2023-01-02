@@ -81,13 +81,13 @@ class _HomePageState extends State<HomePage> {
               title: Text(
                 "Este projeto foi criado como um experimento de aprendizado. \n\nEste App efetua uso e consumo de duas APIs diferentes. A primeira API dos gifs mais bem avaliados no momento de sua consulta e a segunda dos gifs procurados. \n\nNovas funcionalidades como o compartilhamento em redes sociais e plataformas de comunicação estarão disponiveis em breve.",
                 textAlign: TextAlign.justify,
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 16),
               ),
             ),
             ListTile(
               title: Text(
                 "\nObrigado por sua visualização.",
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 18),
               ),
             ),
           ],
