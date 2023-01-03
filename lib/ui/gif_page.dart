@@ -38,7 +38,7 @@ class GifPage extends StatelessWidget {
             Container(
               height: 350,
               width: 400,
-              color: Colors.black,
+              color: Colors.blue,
               child: Center(
                 child:
                     Image.network(_gifData["images"]["downsized_large"]["url"]),
@@ -49,7 +49,7 @@ class GifPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
               height: 200,
               width: 450,
-              color: Colors.black,
+              color: Colors.red,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
